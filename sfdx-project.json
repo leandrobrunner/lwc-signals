@@ -5,7 +5,7 @@
       "default": true
     }
   ],
-  "name": "LWC Signals",
+  "name": "lwc-signals",
   "namespace": "",
   "sfdcLoginUrl": "https://login.salesforce.com",
   "sourceApiVersion": "62.0"
