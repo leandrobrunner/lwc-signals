@@ -123,7 +123,7 @@ unsubscribe();
 ### Basic Component
 ```javascript
 import { LightningElement } from 'lwc';
-import { WithSignals, signal } from 'lwc-signals';
+import { WithSignals, signal } from 'c/signals';
 
 export default class Counter extends WithSignals(LightningElement) {
     count = signal(0);
@@ -152,7 +152,7 @@ export default class Counter extends WithSignals(LightningElement) {
 ```javascript
 // parent.js
 import { LightningElement } from 'lwc';
-import { WithSignals, signal } from 'lwc-signals';
+import { WithSignals, signal } from 'c/signals';
 
 // Signal shared between components
 export const parentData = signal('parent data');
@@ -177,7 +177,7 @@ export default class Parent extends WithSignals(LightningElement) {
 ```javascript
 // child.js
 import { LightningElement } from 'lwc';
-import { WithSignals } from 'lwc-signals';
+import { WithSignals } from 'c/signals';
 import { parentData } from './parent';
 
 export default class Child extends WithSignals(LightningElement) {
@@ -200,7 +200,7 @@ export default class Child extends WithSignals(LightningElement) {
 ### Global State
 ```javascript
 // store/userStore.js
-import { signal, computed } from 'lwc-signals';
+import { signal, computed } from 'c/signals';
 
 export const user = signal({
     name: 'John',
@@ -217,7 +217,7 @@ export const updateTheme = (theme) => {
 ```javascript
 // header.js
 import { LightningElement } from 'lwc';
-import { WithSignals } from 'lwc-signals';
+import { WithSignals } from 'c/signals';
 import { user, updateTheme } from './store/userStore';
 
 export default class Header extends WithSignals(LightningElement) {
@@ -239,7 +239,7 @@ export default class Header extends WithSignals(LightningElement) {
 ```javascript
 // settings.js
 import { LightningElement } from 'lwc';
-import { WithSignals } from 'lwc-signals';
+import { WithSignals } from 'c/signals';
 import { user, isAdmin } from './store/userStore';
 
 export default class Settings extends WithSignals(LightningElement) {
