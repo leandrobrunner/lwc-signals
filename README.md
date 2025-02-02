@@ -48,7 +48,7 @@ After installation, link the LWC component from `node_modules` into your Salesfo
 Run:
 
 ```
-ln -s ./node_modules/lwc-signals/dist/signals ./force-app/main/default/lwc/signals
+ln -s ../../../../node_modules/lwc-signals/dist/signals ./force-app/main/default/lwc/signals
 ```
 
 #### On Windows
@@ -56,13 +56,13 @@ ln -s ./node_modules/lwc-signals/dist/signals ./force-app/main/default/lwc/signa
 Option A: Using Command Prompt (run as Administrator)
 
 ```
-mklink /D "force-app\main\default\lwc\signals" "node_modules\lwc-signals\dist\signals"
+mklink /D "force-app\main\default\lwc\signals" "..\..\..\..\node_modules\lwc-signals\dist\signals"
 ```
 
 Option B: Using PowerShell
 
 ```
-New-Item -ItemType SymbolicLink -Path "force-app\main\default\lwc\signals" -Target "node_modules\lwc-signals\dist\signals"
+New-Item -ItemType SymbolicLink -Path "force-app\main\default\lwc\signals" -Target "..\..\..\..\node_modules\lwc-signals\dist\signals"
 ```
 
 Note: If you are not running as Administrator, enable Developer Mode on Windows to allow symlink creation.
