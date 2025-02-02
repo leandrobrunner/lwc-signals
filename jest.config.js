@@ -1,5 +1,6 @@
-const { jestConfig } = require('@salesforce/sfdx-lwc-jest/config');
+const { jestConfig } = require("@salesforce/sfdx-lwc-jest/config");
 
 module.exports = {
-    ...jestConfig
+  ...jestConfig,
+  collectCoverageFrom: ["force-app/main/default/lwc/**/*.js"],
 };
