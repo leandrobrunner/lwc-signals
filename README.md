@@ -274,7 +274,7 @@ list.value[1] = 'updated';
 ### Effects auto-dispose
 ```javascript
 import { LightningElement } from 'lwc';
-import { effect } from 'c/signals';
+import { WithSignals, effect } from 'c/signals';
 
 export default class Component extends WithSignals(LightningElement) {
     connectedCallback() {
@@ -307,7 +307,7 @@ Include `super.disconnectedCallback()` when implementing `disconnectedCallback()
 ```javascript
 import { LightningElement } from 'lwc';
 import template from "./template.html";
-import { effect } from 'c/signals';
+import { WithSignals } from 'c/signals';
 
 export default class Component extends WithSignals(LightningElement) {
     constructor() {
@@ -315,7 +315,8 @@ export default class Component extends WithSignals(LightningElement) {
     }
 
     render() {
-        this.__triggerSignals(); // Required: Process signal updates
+        super.__triggerSignals(); // Required: Process signal updates
+
         return template;
     }
 
