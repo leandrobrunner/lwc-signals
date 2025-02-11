@@ -295,13 +295,13 @@ For components using the `WithSignals` mixin, it's crucial to maintain proper li
 
 Here's what you need to know:
 
-1. Constructor:
+1. **constructor**:
 Always call `super()` as the first statement in your constructor. This ensures proper initialization of both the `LightningElement` base class and signals functionality.
-2. Render Method:
+2. **render**:
 You must call `super.__triggerSignals()` before returning your template. This method ensures that all signal updates are properly processed before the component renders.
-3. RenderedCallback:
+3. **renderedCallback**:
 When overriding `renderedCallback()`, always include `super.renderedCallback()`. This maintains the parent class's rendering lifecycle behavior while adding your custom logic.
-4. DisconnectedCallback:
+4. **disconnectedCallback**:
 Include `super.disconnectedCallback()` when implementing `disconnectedCallback()`. This ensures proper cleanup of signal subscriptions, effects and prevents memory leaks.
 
 ```javascript
