@@ -31,7 +31,7 @@ Inspired by:
 
 ## Installation
 
-### Step 1: Install the Package
+### Step 1: Install the Package from [NPM](https://www.npmjs.com/package/lwc-signals)
 
 In your project folder, run:
 
