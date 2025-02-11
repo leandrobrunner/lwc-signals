@@ -118,16 +118,30 @@ class SignalBaseClass {
   }
 }
 
+const componentContextsStack = [];
+
+class ComponentContext {
+  _component;
+  _effectsStack;
+
+  constructor(component) {
+    this._component = component;
+    this._effectsStack = [];
+  }
+}
+
 class Effect {
   _callback;
   _callbackCleanup;
   _dependencyDisposes;
   _dependencies;
+  _disposed;
 
   constructor(callback) {
     this._callback = callback;
     this._dependencyDisposes = new Set();
     this._dependencies = new Set();
+    this._disposed = false;
   }
 
   _run() {
@@ -145,6 +159,10 @@ class Effect {
   }
 
   _dispose() {
+    if (this._disposed) {
+      return;
+    }
+
     this._callbackCleanup?.();
     this._callbackCleanup = null;
 
@@ -280,6 +298,15 @@ export function effect(callback) {
 
   effectsStack.push(effectInstance);
 
+  const currentComponentContext =
+    componentContextsStack.length > 0
+      ? componentContextsStack[componentContextsStack.length - 1]
+      : null;
+
+  if (currentComponentContext != null) {
+    currentComponentContext._effectsStack.push(effectInstance);
+  }
+
   try {
     effectInstance._run();
   } finally {
@@ -317,7 +344,7 @@ export function batch(callback) {
   if (batchDepth === 0) {
     const signalsToNotify = Array.from(batchSignalsToNotify);
 
-    batchSignalsToNotify.clear(); 
+    batchSignalsToNotify.clear();
 
     for (const signalInstance of signalsToNotify) {
       signalInstance.notify();
@@ -330,17 +357,26 @@ export const WithSignals = (BaseClass) => {
     __updateTimestamp;
     __previousUpdateTimestamp;
     __effectInstance;
+    __effectsStack;
+    __componentContext;
 
     constructor() {
       super();
 
       const component = this;
 
+      this.__effectsStack = [];
+
       this.__effectInstance = new Effect(() => {
         component.__updateTimestamp = Date.now();
       });
 
       this.__effectInstance._run();
+
+      const componentContext = new ComponentContext(component);
+      this.__componentContext = componentContext;
+
+      componentContextsStack.push(componentContext);
     }
 
     __triggerSignals() {
@@ -363,6 +399,15 @@ export const WithSignals = (BaseClass) => {
 
     disconnectedCallback() {
       this.__effectInstance?._dispose();
+      componentContextsStack.pop();
+
+      for (const effectInstance of this.__componentContext._effectsStack) {
+        try {
+          effectInstance._dispose();
+        } catch (e) {
+          console.error(e);
+        }
+      }
 
       super.disconnectedCallback?.();
     }

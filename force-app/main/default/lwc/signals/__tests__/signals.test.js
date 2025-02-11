@@ -364,6 +364,11 @@ describe("WithSignals", () => {
 
   class MockComponent extends WithSignals(MockLightningComponent) {
     counter = counter;
+    createConnectedCallbackEffect;
+
+    connectedCallback() {
+      this.createConnectedCallbackEffect?.();
+    }
   }
 
   test("should handle signal updates in component lifecycle", () => {
@@ -436,6 +441,25 @@ describe("WithSignals", () => {
     expect(instance.__effectInstance).toBeDefined();
     expect(instance.__effectInstance._dependencies?.size).toBe(0);
     expect(instance.__effectInstance._dependencyDisposes?.size).toBe(0);
+  });
+
+  test("should handle cleanup effects correctly", () => {
+    const mockCleanup = jest.fn();
+
+    const instance = new MockComponent();
+    instance.createConnectedCallbackEffect = () => {
+      effect(() => {
+        return () => mockCleanup();
+      })
+    };
+
+    instance.connectedCallback();
+
+    expect(mockCleanup).toHaveBeenCalledTimes(0);
+
+    instance.disconnectedCallback();
+
+    expect(mockCleanup).toHaveBeenCalledTimes(1);
   });
 });
 
