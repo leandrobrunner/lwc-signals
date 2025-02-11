@@ -2,6 +2,11 @@
 
 A lightweight reactive state management library for Salesforce Lightning Web Components.
 
+<a href="https://githubsfdeploy.herokuapp.com?owner=leandrobrunner&repo=lwc-signals&ref=main">
+  <img alt="Deploy to Salesforce"
+       src="https://raw.githubusercontent.com/afawcett/githubsfdeploy/master/deploy.png">
+</a>
+
 ## Features
 
 - 🚀 Fine-grained reactivity
