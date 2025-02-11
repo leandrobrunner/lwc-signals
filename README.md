@@ -271,6 +271,66 @@ list.value.unshift('first');
 list.value[1] = 'updated';
 ```
 
+### Effects auto-dispose
+```javascript
+import { LightningElement } from 'lwc';
+import { effect } from 'c/signals';
+
+export default class Component extends WithSignals(LightningElement) {
+    connectedCallback() {
+        effect(() => {
+            console.log("Effect created.");
+
+            return () => {
+                console.log("Effect disposed."); // Automatically called when the component is disconnected
+            }
+        })
+    }
+}
+```
+
+### Considerations
+
+For components using the `WithSignals` mixin, it's crucial to maintain proper lifecycle behavior by following specific requirements.
+
+Here's what you need to know:
+
+1. Constructor:
+Always call `super()` as the first statement in your constructor. This ensures proper initialization of both the `LightningElement` base class and signals functionality.
+2. Render Method:
+You must call `super.__triggerSignals()` before returning your template. This method ensures that all signal updates are properly processed before the component renders.
+3. RenderedCallback:
+When overriding `renderedCallback()`, always include `super.renderedCallback()`. This maintains the parent class's rendering lifecycle behavior while adding your custom logic.
+4. DisconnectedCallback:
+Include `super.disconnectedCallback()` when implementing `disconnectedCallback()`. This ensures proper cleanup of signal subscriptions, effects and prevents memory leaks.
+
+```javascript
+import { LightningElement } from 'lwc';
+import template from "./template.html";
+import { effect } from 'c/signals';
+
+export default class Component extends WithSignals(LightningElement) {
+    constructor() {
+        super(); // Required: Initialize parent class
+    }
+
+    render() {
+        this.__triggerSignals(); // Required: Process signal updates
+        return template;
+    }
+
+    renderedCallback() {
+        super.renderedCallback(); // Required: Maintain parent lifecycle
+        // Your custom logic here
+    }
+
+    disconnectedCallback() {
+        super.disconnectedCallback(); // Required: Clean up signals and effects
+        // Your cleanup code here
+    }
+}
+```
+
 ## Documentation
 
 - [Architecture and Internal Concepts](./docs/architecture.md)
