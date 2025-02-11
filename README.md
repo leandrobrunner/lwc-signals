@@ -58,7 +58,7 @@ sf package install --package "lwc-signals@1.1.0-1"
 In your project folder, run:
 
 ```
-npm install lwc-signals
+npm install --save lwc-signals
 ```
 
 ### Step 2: Link the Component to Your Salesforce Project
