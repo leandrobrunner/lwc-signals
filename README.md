@@ -29,9 +29,26 @@ Inspired by:
 - [Preact Signals](https://preactjs.com/guide/v10/signals/) - Fine-grained reactivity system
 - Salesforce's signals concept and API design principles
 
-## Installation
+## Unlocked Package
 
-### Step 1: Install the Package from [NPM](https://www.npmjs.com/package/lwc-signals)
+Production / Dev:
+```
+https://login.salesforce.com/packaging/installPackage.apexp?p0=04tbm0000006D7RAAU
+```
+
+Sandbox / Scratch:
+```
+https://test.salesforce.com/packaging/installPackage.apexp?p0=04tbm0000006D7RAAU
+```
+
+You can also install using the SF CLI:
+```bash
+sf package install --package "lwc-signals@1.1.0-1"
+```
+
+## Installation from [NPM](https://www.npmjs.com/package/lwc-signals)
+
+### Step 1: Install the Package
 
 In your project folder, run:
 
@@ -67,9 +84,6 @@ New-Item -ItemType SymbolicLink -Path "force-app\main\default\lwc\signals" -Targ
 
 Note: If you are not running as Administrator, enable Developer Mode on Windows to allow symlink creation.
 
-### Step 3: Start Using LWC Signals
-
-You can now import and use the library in your Lightning Web Components. See the Usage section of the README for examples.
 
 ## Core Concepts
 

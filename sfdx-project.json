@@ -1,12 +1,20 @@
 {
   "packageDirectories": [
     {
+      "versionName": "ver 1.1.0",
+      "versionNumber": "1.1.0.NEXT",
       "path": "force-app",
-      "default": true
+      "default": true,
+      "package": "lwc-signals",
+      "versionDescription": "A lightweight reactive state management library for Salesforce Lightning Web Components."
     }
   ],
   "name": "lwc-signals",
   "namespace": "",
   "sfdcLoginUrl": "https://login.salesforce.com",
-  "sourceApiVersion": "62.0"
+  "sourceApiVersion": "62.0",
+  "packageAliases": {
+    "lwc-signals": "0Hobm0000000J4HCAU",
+    "lwc-signals@1.1.0-1": "04tbm0000006D7RAAU"
+  }
 }

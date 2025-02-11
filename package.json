@@ -1,6 +1,6 @@
 {
   "name": "lwc-signals",
-  "version": "1.0.7",
+  "version": "1.1.0",
   "description": "A lightweight reactive state management library for Salesforce Lightning Web Components.",
   "files": [
     "dist/signals"
@@ -13,7 +13,9 @@
     "test:unit:debug": "sfdx-lwc-jest --debug",
     "test:unit:coverage": "sfdx-lwc-jest --coverage",
     "prettier": "prettier --write \"**/*.{js,json,xml}\"",
-    "prettier:verify": "prettier --check \"**/*.{js,json,xml}\""
+    "prettier:verify": "prettier --check \"**/*.{js,json,xml}\"",
+    "generate-package-version": "sfdx package version create --package \"lwc-signals\" --code-coverage --installation-key-bypass --wait 10",
+    "promote-package-version": "sfdx package version promote --package \"$(jq -r '.packageAliases | to_entries[-1].key' sfdx-project.json)\""
   },
   "devDependencies": {
     "@salesforce/sfdx-lwc-jest": "^7.0.1",
