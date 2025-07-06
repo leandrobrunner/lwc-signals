@@ -101,6 +101,12 @@ name.value = 'Jane';      // Set value: triggers updates
 
 ### Computed Values
 ```javascript
+const counter = signal(5);
+// Updates when counter changes
+const double = computed(() => counter.value * 2);
+
+console.log(double.value);  // 10
+
 const firstName = signal('John');
 const lastName = signal('Doe');
 

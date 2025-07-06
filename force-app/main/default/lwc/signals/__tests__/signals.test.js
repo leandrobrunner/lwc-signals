@@ -438,9 +438,8 @@ describe("WithSignals", () => {
     jest.runAllTimers();
 
     // Component should be removed from signal's tracking
-    expect(instance.__effectInstance).toBeDefined();
-    expect(instance.__effectInstance._dependencies?.size).toBe(0);
-    expect(instance.__effectInstance._dependencyDisposes?.size).toBe(0);
+    expect(instance.__effectInstance).toBe(null);
+    expect(instance.__componentContext).toBe(null);
   });
 
   test("should handle cleanup effects correctly", () => {

@@ -128,6 +128,11 @@ class ComponentContext {
     this._component = component;
     this._effectsStack = [];
   }
+
+  destroy() {
+    this._component = null;
+    this._effectsStack = null;
+  }
 }
 
 class Effect {
@@ -145,11 +150,19 @@ class Effect {
   }
 
   _run() {
+    if (this._disposed) {
+      return;
+    }
+
     this._callbackCleanup?.();
     this._callbackCleanup = this._callback?.();
   }
 
   _addDependency(signalInstance) {
+    if (this._disposed) {
+      return;
+    }
+
     if (!this._dependencies.has(signalInstance)) {
       const signalDispose = signalInstance.subscribe(() => this._run());
 
@@ -163,19 +176,20 @@ class Effect {
       return;
     }
 
+    this._disposed = true;
+
     this._callbackCleanup?.();
     this._callbackCleanup = null;
 
     for (const signalDispose of this._dependencyDisposes) {
-      try {
-        signalDispose();
-      } catch (e) {
-        console.error(e);
-      }
+      signalDispose();
     }
 
     this._dependencyDisposes.clear();
     this._dependencies.clear();
+    this._dependencyDisposes = null;
+    this._dependencies = null;
+    this._callback = null;
   }
 }
 
@@ -254,7 +268,7 @@ class ComputedSignal extends SignalBaseClass {
 
   peek() {
     if (this._dirty) {
-      this._compute(false);
+      this._compute();
     }
 
     return this._value;
@@ -264,9 +278,7 @@ class ComputedSignal extends SignalBaseClass {
     const currentEffect =
       effectsStack.length > 0 ? effectsStack[effectsStack.length - 1] : null;
 
-    if (currentEffect != null) {
-      currentEffect?._addDependency(this);
-    }
+    currentEffect?._addDependency(this);
   }
 
   _compute() {
@@ -275,13 +287,24 @@ class ComputedSignal extends SignalBaseClass {
     }
 
     this._computing = true;
-    const newValue = this._computation();
+
+    let value;
+
+    try {
+      value = this._computation();
+    } catch (e) {
+      console.error(e);
+
+      value = this._value;
+    }
+
     this._computing = false;
 
-    if (this._value !== newValue) {
-      this._value = newValue;
-      this._dirty = false;
+    if (this._value !== value) {
+      this._value = value;
     }
+
+    this._dirty = false;
   }
 }
 
@@ -294,7 +317,17 @@ export function computed(computation) {
 }
 
 export function effect(callback) {
-  const effectInstance = new Effect(callback);
+  let effectInstance = new Effect(() => {
+    let callbackCleanup;
+
+    try {
+      callbackCleanup = callback?.();
+    } catch (e) {
+      console.error(e);
+    }
+
+    return callbackCleanup;
+  });
 
   effectsStack.push(effectInstance);
 
@@ -314,7 +347,8 @@ export function effect(callback) {
   }
 
   return () => {
-    return effectInstance._dispose();
+    effectInstance?._dispose();
+    effectInstance = null;
   };
 }
 
@@ -357,15 +391,12 @@ export const WithSignals = (BaseClass) => {
     __updateTimestamp;
     __previousUpdateTimestamp;
     __effectInstance;
-    __effectsStack;
     __componentContext;
 
     constructor() {
       super();
 
       const component = this;
-
-      this.__effectsStack = [];
 
       this.__effectInstance = new Effect(() => {
         component.__updateTimestamp = Date.now();
@@ -399,6 +430,8 @@ export const WithSignals = (BaseClass) => {
 
     disconnectedCallback() {
       this.__effectInstance?._dispose();
+      this.__effectInstance = null;
+
       componentContextsStack.pop();
 
       for (const effectInstance of this.__componentContext._effectsStack) {
@@ -408,6 +441,9 @@ export const WithSignals = (BaseClass) => {
           console.error(e);
         }
       }
+
+      this.__componentContext.destroy();
+      this.__componentContext = null;
 
       super.disconnectedCallback?.();
     }
