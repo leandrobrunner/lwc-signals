@@ -1,8 +1,8 @@
 {
   "packageDirectories": [
     {
-      "versionName": "ver 1.1.0",
-      "versionNumber": "1.1.0.NEXT",
+      "versionName": "ver 1.1.1",
+      "versionNumber": "1.1.1.NEXT",
       "path": "force-app",
       "default": true,
       "package": "lwc-signals",
@@ -15,6 +15,7 @@
   "sourceApiVersion": "62.0",
   "packageAliases": {
     "lwc-signals": "0Hobm0000000J4HCAU",
-    "lwc-signals@1.1.0-1": "04tbm0000006D7RAAU"
+    "lwc-signals@1.1.0-1": "04tbm0000006D7RAAU",
+    "lwc-signals@1.1.1-1": "04tbm0000008hPZAAY"
   }
 }

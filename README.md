@@ -38,12 +38,12 @@ Inspired by:
 
 Production / Dev:
 ```
-https://login.salesforce.com/packaging/installPackage.apexp?p0=04tbm0000006D7RAAU
+https://login.salesforce.com/packaging/installPackage.apexp?p0=04tbm0000008hPZAAY
 ```
 
 Sandbox / Scratch:
 ```
-https://test.salesforce.com/packaging/installPackage.apexp?p0=04tbm0000006D7RAAU
+https://test.salesforce.com/packaging/installPackage.apexp?p0=04tbm0000008hPZAAY
 ```
 
 You can also install using the SF CLI:
