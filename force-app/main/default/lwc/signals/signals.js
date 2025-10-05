@@ -167,9 +167,9 @@ class Effect {
     }
 
     if (!this._dependencies.has(signalInstance)) {
-      const signalDispose = signalInstance.subscribe(() => this._run());
+      const signalSubscriptionDispose = signalInstance.subscribe(() => this._run());
 
-      this._dependencyDisposes.add(signalDispose);
+      this._dependencyDisposes.add(signalSubscriptionDispose);
       this._dependencies.add(signalInstance);
     }
   }
