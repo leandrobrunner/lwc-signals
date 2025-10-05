@@ -335,6 +335,24 @@ describe("Effect Cleanup", () => {
     expect(mockCleanup1).toHaveBeenCalledTimes(2);
     expect(mockCleanup2).toHaveBeenCalledTimes(2);
   });
+
+  test("should handle non-function values as return", () => {
+    const count = signal(0);
+    const mockfn = jest.fn();
+
+    const dispose = effect(() => {
+      expect(count.value).not.toBe(undefined);
+      mockfn();
+
+      return true;
+    });
+
+    count.value = 1;
+    jest.runAllTimers();
+
+    dispose();
+    expect(mockfn).toHaveBeenCalledTimes(2);
+  });
 });
 
 describe("WithSignals", () => {

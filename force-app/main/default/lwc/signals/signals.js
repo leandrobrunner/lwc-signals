@@ -154,7 +154,10 @@ class Effect {
       return;
     }
 
-    this._callbackCleanup?.();
+    if (typeof this._callbackCleanup === "function") {
+      this._callbackCleanup();
+    }
+
     this._callbackCleanup = this._callback?.();
   }
 
@@ -178,7 +181,10 @@ class Effect {
 
     this._disposed = true;
 
-    this._callbackCleanup?.();
+    if (typeof this._callbackCleanup === "function") {
+      this._callbackCleanup?.();
+    }
+
     this._callbackCleanup = null;
 
     for (const signalDispose of this._dependencyDisposes) {
