@@ -1,6 +1,6 @@
-let effectsStack = [];
+const effectsStack = [];
+const batchSignalsToNotify = new Set();
 let batchDepth = 0;
-let batchSignalsToNotify = new Set();
 
 const ARRAY_MUTATING_METHODS = new Set([
   "push",
