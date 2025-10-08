@@ -254,6 +254,12 @@ class ComputedSignal extends SignalBaseClass {
     this._computation = computation;
     this._effectRan = false;
     this._dirty = true;
+  }
+
+  validateEffect() {
+    if (this._effectRan) {
+      return;
+    }
 
     effect(() => {
       if (!this._effectRan) {
@@ -281,6 +287,8 @@ class ComputedSignal extends SignalBaseClass {
   }
 
   _track() {
+    this.validateEffect();
+
     const currentEffect =
       effectsStack.length > 0 ? effectsStack[effectsStack.length - 1] : null;
 
@@ -311,6 +319,12 @@ class ComputedSignal extends SignalBaseClass {
     }
 
     this._dirty = false;
+  }
+
+  subscribe(onUpdate) {
+    this.validateEffect();
+
+    return super.subscribe(onUpdate);
   }
 }
 
