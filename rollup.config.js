@@ -2,22 +2,27 @@ import terser from "@rollup/plugin-terser";
 import copy from "rollup-plugin-copy";
 import dts from "rollup-plugin-dts";
 
-const input = "force-app/main/default/lwc/signals/signals.js";
+const INPUT = "force-app/main/default/lwc/signals/signals.js";
+
+const TERSER_CONFIG = terser({
+  mangle: {
+    properties: {
+      regex: /^_/,
+      reserved: ["peek", "value", "subscribe", "notify", "__triggerSignals"],
+    },
+  },
+});
 
 export default [
   {
-    input: "force-app/main/default/lwc/signals/signals.js",
+    input: INPUT,
     output: {
       file: "dist/signals/signals.js",
       format: "es",
       sourcemap: false,
     },
     plugins: [
-      terser({
-        mangle: {
-          properties: true,
-        },
-      }),
+      TERSER_CONFIG,
       copy({
         targets: [
           {
@@ -29,35 +34,23 @@ export default [
     ],
   },
   {
-    input,
+    input: INPUT,
     output: {
       file: "dist/index.js",
       format: "es",
     },
-    plugins: [
-      terser({
-        mangle: {
-          properties: true,
-        },
-      }),
-    ],
+    plugins: [TERSER_CONFIG],
   },
   {
-    input,
+    input: INPUT,
     output: {
       file: "dist/index.cjs",
       format: "cjs",
     },
-    plugins: [
-      terser({
-        mangle: {
-          properties: true,
-        },
-      }),
-    ],
+    plugins: [TERSER_CONFIG],
   },
   {
-    input,
+    input: INPUT,
     output: [{ file: "dist/index.d.ts", format: "es" }],
     plugins: [dts()],
   },
