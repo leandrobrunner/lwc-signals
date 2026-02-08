@@ -38,17 +38,17 @@ Inspired by:
 
 Production / Dev:
 ```
-https://login.salesforce.com/packaging/installPackage.apexp?p0=04tbm000000Lk7tAAC
+https://login.salesforce.com/packaging/installPackage.apexp?p0=04tbm000000Lk9VAAS
 ```
 
 Sandbox / Scratch:
 ```
-https://test.salesforce.com/packaging/installPackage.apexp?p0=04tbm000000Lk7tAAC
+https://test.salesforce.com/packaging/installPackage.apexp?p0=04tbm000000Lk9VAAS
 ```
 
 You can also install using the SF CLI:
 ```bash
-sf package install --package "04tbm000000Lk7tAAC"
+sf package install --package "04tbm000000Lk9VAAS"
 ```
 
 ## Installation from [NPM](https://www.npmjs.com/package/lwc-signals)

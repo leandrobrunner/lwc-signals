@@ -1,8 +1,8 @@
 {
   "packageDirectories": [
     {
-      "versionName": "ver 1.1.2",
-      "versionNumber": "1.1.2.NEXT",
+      "versionName": "ver 1.1.3",
+      "versionNumber": "1.1.3.NEXT",
       "path": "force-app",
       "default": true,
       "package": "lwc-signals",
@@ -17,6 +17,7 @@
     "lwc-signals": "0Hobm0000000J4HCAU",
     "lwc-signals@1.1.0-1": "04tbm0000006D7RAAU",
     "lwc-signals@1.1.1-1": "04tbm0000008hPZAAY",
-    "lwc-signals@1.1.2-1": "04tbm000000Lk7tAAC"
+    "lwc-signals@1.1.2-1": "04tbm000000Lk7tAAC",
+    "lwc-signals@1.1.3-1": "04tbm000000Lk9VAAS"
   }
 }
