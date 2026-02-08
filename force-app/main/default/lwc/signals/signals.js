@@ -158,7 +158,13 @@ class Effect {
       this._callbackCleanup();
     }
 
-    this._callbackCleanup = this._callback?.();
+    let _callbackCleanup;
+
+    try {
+      _callbackCleanup = this._callback?.();
+    } finally {
+      this._callbackCleanup = _callbackCleanup;
+    }
   }
 
   _addDependency(signalInstance) {
@@ -167,7 +173,9 @@ class Effect {
     }
 
     if (!this._dependencies.has(signalInstance)) {
-      const signalSubscriptionDispose = signalInstance.subscribe(() => this._run());
+      const signalSubscriptionDispose = signalInstance.subscribe(() =>
+        this._run(),
+      );
 
       this._dependencyDisposes.add(signalSubscriptionDispose);
       this._dependencies.add(signalInstance);
@@ -325,6 +333,14 @@ class ComputedSignal extends SignalBaseClass {
     this.validateEffect();
 
     return super.subscribe(onUpdate);
+  }
+
+  notify() {
+    if (batchDepth > 0) {
+      batchSignalsToNotify.add(this);
+    } else {
+      super.notify();
+    }
   }
 }
 
