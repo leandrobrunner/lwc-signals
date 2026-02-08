@@ -38,17 +38,17 @@ Inspired by:
 
 Production / Dev:
 ```
-https://login.salesforce.com/packaging/installPackage.apexp?p0=04tbm0000008hPZAAY
+https://login.salesforce.com/packaging/installPackage.apexp?p0=04tbm000000Lk7tAAC
 ```
 
 Sandbox / Scratch:
 ```
-https://test.salesforce.com/packaging/installPackage.apexp?p0=04tbm0000008hPZAAY
+https://test.salesforce.com/packaging/installPackage.apexp?p0=04tbm000000Lk7tAAC
 ```
 
 You can also install using the SF CLI:
 ```bash
-sf package install --package "lwc-signals@1.1.0-1"
+sf package install --package "lwc-signals@1.1.2-1"
 ```
 
 ## Installation from [NPM](https://www.npmjs.com/package/lwc-signals)
