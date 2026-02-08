@@ -1,0 +1,9 @@
+{
+  "compilerOptions": {
+    "allowJs": true,
+    "declaration": true,
+    "emitDeclarationOnly": true,
+    "stripInternal": true,
+    "declarationDir": "dist/types"
+  }
+}

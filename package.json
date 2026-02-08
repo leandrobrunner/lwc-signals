@@ -2,6 +2,14 @@
   "name": "lwc-signals",
   "version": "1.1.1",
   "description": "A lightweight reactive state management library for Salesforce Lightning Web Components.",
+  "main": "./dist/index.cjs",
+  "module": "./dist/index.js",
+  "exports": {
+    ".": {
+      "import": "./dist/index.js",
+      "require": "./dist/index.cjs"
+    }
+  },
   "files": [
     "dist/signals"
   ],
@@ -18,16 +26,19 @@
     "promote-package-version": "sfdx package version promote --package \"$(jq -r '.packageAliases | to_entries[-1].key' sfdx-project.json)\""
   },
   "devDependencies": {
-    "@salesforce/sfdx-lwc-jest": "^7.0.1",
-    "prettier": "^3.1.0",
-    "rollup": "^2.79.2",
+    "@rollup/plugin-terser": "^0.4.4",
+    "@salesforce/sfdx-lwc-jest": "^7.1.2",
+    "prettier": "^3.8.1",
+    "rollup": "^4.57.1",
     "rollup-plugin-copy": "^3.5.0",
-    "@rollup/plugin-terser": "^0.4.4"
+    "rollup-plugin-dts": "^6.3.0",
+    "typescript": "^5.9.3"
   },
   "keywords": [
     "lwc",
     "salesforce",
-    "signals"
+    "signals",
+    "state"
   ],
   "license": "MIT",
   "repository": {
