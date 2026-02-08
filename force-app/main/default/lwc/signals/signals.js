@@ -264,7 +264,7 @@ class ComputedSignal extends SignalBaseClass {
     this._dirty = true;
   }
 
-  validateEffect() {
+  _validateEffect() {
     if (this._effectRan) {
       return;
     }
@@ -295,7 +295,7 @@ class ComputedSignal extends SignalBaseClass {
   }
 
   _track() {
-    this.validateEffect();
+    this._validateEffect();
 
     const currentEffect =
       effectsStack.length > 0 ? effectsStack[effectsStack.length - 1] : null;
@@ -330,7 +330,7 @@ class ComputedSignal extends SignalBaseClass {
   }
 
   subscribe(onUpdate) {
-    this.validateEffect();
+    this._validateEffect();
 
     return super.subscribe(onUpdate);
   }
@@ -480,6 +480,7 @@ export const WithSignals = (BaseClass) => {
 
       this.__componentContext.destroy();
       this.__componentContext = null;
+      this.__updateTimestamp = null;
 
       super.disconnectedCallback?.();
     }

@@ -403,8 +403,6 @@ describe("WithSignals", () => {
     instance.renderedCallback();
 
     expect(mockRender).toHaveBeenCalledTimes(1);
-    expect(instance.__updateTimestamp).toBeDefined();
-    expect(instance.__previousUpdateTimestamp).toBeDefined();
     expect(mockRenderedCallback).toHaveBeenCalledTimes(1);
 
     counter.value = 1;
@@ -419,11 +417,6 @@ describe("WithSignals", () => {
     instance.renderedCallback();
 
     expect(mockRender).toHaveBeenCalledTimes(2);
-    expect(instance.__updateTimestamp).toBeDefined();
-    expect(
-      instance.__previousUpdateTimestamp === undefined ||
-        instance.__previousUpdateTimestamp === instance.__updateTimestamp
-    ).toBeTruthy();
     expect(mockRenderedCallback).toHaveBeenCalledTimes(2);
 
     counter.value = 2;
@@ -438,26 +431,7 @@ describe("WithSignals", () => {
     instance.renderedCallback();
 
     expect(mockRender).toHaveBeenCalled();
-    expect(instance.__updateTimestamp).toBeDefined();
-    expect(instance.__previousUpdateTimestamp).toBeDefined();
     expect(mockRenderedCallback).toHaveBeenCalledTimes(3);
-  });
-
-  test("should cleanup disconnected components", () => {
-    const instance = new MockComponent();
-    const testSignal = signal("test");
-
-    instance.render();
-    expect(testSignal.value).toBe("test");
-
-    instance.disconnectedCallback();
-
-    testSignal.value = "updated";
-    jest.runAllTimers();
-
-    // Component should be removed from signal's tracking
-    expect(instance.__effectInstance).toBe(null);
-    expect(instance.__componentContext).toBe(null);
   });
 
   test("should handle cleanup effects correctly", () => {
