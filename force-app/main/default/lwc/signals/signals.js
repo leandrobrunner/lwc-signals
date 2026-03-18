@@ -128,11 +128,6 @@ class ComponentContext {
     this._component = component;
     this._effectsStack = [];
   }
-
-  destroy() {
-    this._component = null;
-    this._effectsStack = null;
-  }
 }
 
 class Effect {
@@ -432,21 +427,26 @@ export const WithSignals = (BaseClass) => {
     constructor() {
       super();
 
-      const component = this;
-
-      this.__effectInstance = new Effect(() => {
-        component.__updateTimestamp = Date.now();
-      });
-
-      this.__effectInstance._run();
-
-      const componentContext = new ComponentContext(component);
+      const componentContext = new ComponentContext(this);
       this.__componentContext = componentContext;
 
       componentContextsStack.push(componentContext);
     }
 
+    __validateEffect() {
+      if (this.__effectInstance != null) {
+        return;
+      }
+
+      this.__effectInstance = new Effect(() => {
+        this.__updateTimestamp = Date.now();
+      });
+
+      this.__effectInstance._run();
+    }
+
     __triggerSignals() {
+      this.__validateEffect();
       effectsStack.push(this.__effectInstance);
 
       this.__previousUpdateTimestamp = this.__updateTimestamp;
@@ -478,9 +478,7 @@ export const WithSignals = (BaseClass) => {
         }
       }
 
-      this.__componentContext.destroy();
-      this.__componentContext = null;
-      this.__updateTimestamp = null;
+      this.__componentContext._effectsStack.length = 0;
 
       super.disconnectedCallback?.();
     }
