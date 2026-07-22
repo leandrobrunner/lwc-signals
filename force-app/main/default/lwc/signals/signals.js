@@ -16,11 +16,16 @@ const MAP_MUTATING_METHODS = new Set(["set", "delete", "clear"]);
 const DATE_MUTATING_METHODS_PREFIX = "set";
 const TYPED_ARRAY_MUTATING_METHOD = "set";
 
-const isMutableType = (obj) =>
-  obj !== null &&
-  typeof obj === "object" &&
-  !(obj instanceof WeakMap) &&
-  !(obj instanceof WeakSet);
+const isReactiveTarget = (obj) => {
+  if (obj === null || typeof obj !== "object") return false;
+  const proto = Object.getPrototypeOf(obj);
+  return (
+    (proto === Object.prototype || proto === null) ||
+    Array.isArray(obj) ||
+    obj instanceof Map ||
+    obj instanceof Set
+  );
+};
 
 const didMutate = (target, method, beforeSize) => {
   if (Array.isArray(target)) {
@@ -35,14 +40,6 @@ const didMutate = (target, method, beforeSize) => {
     return beforeSize !== target.size || MAP_MUTATING_METHODS.has(method);
   }
 
-  if (target instanceof Date) {
-    return method.startsWith(DATE_MUTATING_METHODS_PREFIX);
-  }
-
-  if (ArrayBuffer.isView(target)) {
-    return method === TYPED_ARRAY_MUTATING_METHOD;
-  }
-
   return true;
 };
 
@@ -52,7 +49,7 @@ const makeReactive = (obj, notifyFn) => {
     return reactiveCache.get(obj);
   }
 
-  if (!isMutableType(obj)) {
+  if (!isReactiveTarget(obj)) {
     return obj;
   }
 
@@ -73,7 +70,7 @@ const makeReactive = (obj, notifyFn) => {
         };
       }
 
-      return isMutableType(value) ? makeReactive(value, notifyFn) : value;
+      return isReactiveTarget(value) ? makeReactive(value, notifyFn) : value;
     },
     set: (target, prop, value) => {
       if (target[prop] !== value) {
